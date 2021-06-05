@@ -23,6 +23,7 @@ jobs:
         run: |
           if: contains(steps.pr-labels.outputs.labels, '  ok-to-test  ')
           echo "Running Pull Request Function Tests ..."
-          ./common/scripts/pull-request-function-test.sh
+          bash ./common/scripts/pull-request-function-test.sh
+        if: contains(steps.pr-labels.outputs.labels, '  ok-to-test  ')
         env:
           COLLECTIVE_TOKEN: ${secrets.COLLECTIVE_TOKEN}
