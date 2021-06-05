@@ -2,12 +2,15 @@
 # Copyright (c) 2020 Red Hat, Inc.
 # Copyright Contributors to the Open Cluster Management project
 
-function delete_cluster() {
+function delete_cluster() { 
+    echo "Deleting clusterclaim ..."
     oc login --token="${COLLECTIVE_TOKEN}" --server="${COLLECTIVE_SERVER}"
 
     cd ./lifeguard/clusterclaims/
     echo "Y" | ./delete.sh
 }
+
+set -e
 
 export CLUSTERCLAIM_LIFETIME=4h
 export CLUSTERPOOL_TARGET_NAMESPACE=install
@@ -22,16 +25,11 @@ if [[ -z "${COLLECTIVE_TOKEN}" ]]; then
     exit 1
 fi
 
-if ! command -v jq &> /dev/null
-then
-    echo "jq could not be found"
-    exit
-fi
-
 if ! command -v yq &> /dev/null
 then
-    echo "yq could not be found"
-    exit
+    echo "Installing yq ..."
+    wget https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64.tar.gz -O - |\
+  tar xz && sudo mv yq_linux_amd64 /usr/bin/yq >/dev/null
 fi
 
 
@@ -40,7 +38,9 @@ oc login --token="${COLLECTIVE_TOKEN}" --server="${COLLECTIVE_SERVER}"
 git clone https://github.com/open-cluster-management/lifeguard.git
 
 cd lifeguard/clusterclaims/
+echo "Applying clusterclaim ..."
 ./apply.sh
+set +e
 trap 'delete_cluster' ERR
 
 cd ../..
