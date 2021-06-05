@@ -15,7 +15,8 @@ For steps on how to contribute and test the MultiClusterHub Operator component, 
 ## Development Tools
 ### Disabling MultiClusterHub Operator
 
-Once installed, the hub operator will monitor changes in the cluster that affect an instance of the multiclusterhub (mch) and reconcile deviations to maintain desired state. To stop the installer from making these changes you can apply an annotation to the mch instance.
+Once installed, the hub operator will mon
+itor changes in the cluster that affect an instance of the multiclusterhub (mch) and reconcile deviations to maintain desired state. To stop the installer from making these changes you can apply an annotation to the mch instance.
 ```bash
 kubectl annotate mch <mch-name> mch-pause=true
 ```
