@@ -6,7 +6,9 @@ We are in the process of enabling this repo for community contribution. See wiki
 
 # MultiClusterHub Operator
 
-The MultiCusterHub operator manages the install of Open Cluster Management (OCM) on RedHat Openshift Container Platform
+The MultiCusterHub operator manages the install of Open Cluster Management (OC
+
+) on RedHat Openshift Container Platform
 
 ## Contributing
 
