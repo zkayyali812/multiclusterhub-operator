@@ -21,16 +21,12 @@ if [[ -z "${COLLECTIVE_TOKEN}" ]]; then
     echo "environment variable 'COLLECTIVE_TOKEN' must be set"
     exit 1
 fi
-
-if ! command -v jq &> /dev/null
-then
-    echo "jq could not be found"
-    exit
-fi
-
+type jq
 if ! command -v yq &> /dev/null
 then
-    echo "yq could not be found"
+    echo "Installing yq ..."
+    wget https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_amd64.tar.gz -O - |\
+  tar xz && mv ${BINARY} /usr/local/bin/yq
     exit
 fi
 
