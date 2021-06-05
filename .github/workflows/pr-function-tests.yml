@@ -14,16 +14,15 @@ jobs:
   function-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: NathanielHill/check-pr-label-action@v4.0.0
-        with:
-          github-token: ${{ secrets.FF_TOKEN }}
-          valid-labels: ok-to-test
-          
+      - name: Get PR labels
+        id: pr-labels
+        uses: joerick/pr-labels-action@v1.0.6
       - uses: actions/checkout@v2
 
-      - name: Run Function Tests
+      - name: Run Function Tests (Requires 'ok-to-test' label)
+        if: contains(steps.pr-labels.outputs.labels, ' ok-to-test ')
         run: |
           echo "Running Pull Request Function Tests ..."
-          ./common/scripts/pull-request-function-test.sh
+          bash ./common/scripts/pull-request-function-test.sh
         env:
           COLLECTIVE_TOKEN: ${secrets.COLLECTIVE_TOKEN}
