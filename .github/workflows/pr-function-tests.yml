@@ -25,6 +25,7 @@ jobs:
           type: remove
       - name: Run Function Tests (Requires 'ok-to-test' label)
         run: |
+          echo "${{ secrets.QUAY_TOKEN }}" | docker login quay.io/rhibmcollab -u "${{ secrets.QUAY_USER }}" --password-stdin
           echo "Running Pull Request Function Tests ..."
           bash ./common/scripts/pull-request-function-test.sh
         env:
