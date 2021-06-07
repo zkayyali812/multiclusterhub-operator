@@ -44,6 +44,7 @@ If overriding individual images, the minimum required parameters required to bui
 kubectl create configmap <my-config> --from-file=docs/examples/manifest-oneimage.json # Override 1 image example
 kubectl create configmap <my-config> --from-file=docs/examples/manifest-allimages.json # Overriding all images example
 
+
 kubectl annotate mch <mch-name> --overwrite mch-imageOverridesCM=<my-config> # Provide the configmap as an override to the MCH
 ```
 
