@@ -32,8 +32,30 @@ then
   tar xz && sudo mv yq_linux_amd64 /usr/bin/yq >/dev/null
 fi
 
+_OPERATOR_SDK_VERSION=v0.18.2
 
-oc login --token="${COLLECTIVE_TOKEN}" --server="${COLLECTIVE_SERVER}"  --insecure-skip-tls-verify
+if ! [ -x "$(command -v operator-sdk)" ]; then
+    echo "Installing Operator-SDK ..."
+    if [[ "$OSTYPE" == "linux-gnu" ]]; then
+            curl -L https://github.com/operator-framework/operator-sdk/releases/download/${_OPERATOR_SDK_VERSION}/operator-sdk-${_OPERATOR_SDK_VERSION}-x86_64-linux-gnu -o operator-sdk
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+            curl -L https://github.com/operator-framework/operator-sdk/releases/download/${_OPERATOR_SDK_VERSION}/operator-sdk-${_OPERATOR_SDK_VERSION}-x86_64-apple-darwin -o operator-sdk
+    fi
+    chmod +x operator-sdk
+    sudo mv operator-sdk /usr/local/bin/operator-sdk
+fi
+
+if ! command -v ginkgo &> /dev/null
+then
+    echo "Installing ginkgo ..."
+    go get -u github.com/onsi/ginkgo/ginkgo
+    export PATH=$PATH:$GOPATH/bin
+    type ginkgo
+fi
+
+ginkgo bootstrap
+
+oc login ${COLLECTIVE_SERVER} --insecure-skip-tls-verify --token="${COLLECTIVE_TOKEN}"
 
 git clone https://github.com/open-cluster-management/lifeguard.git
 
