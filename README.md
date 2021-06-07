@@ -20,6 +20,7 @@ Once installed, the hub operator will monitor changes in the cluster that affect
 kubectl annotate mch <mch-name> mch-pause=true
 ```
 
+
 Remove or edit this annotation to resume installer operations
 ```bash
 kubectl annotate mch <mch-name> mch-pause=false --overwrite
